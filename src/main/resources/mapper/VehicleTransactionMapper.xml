@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lichunliang.huoyunwuliu.mapper.VehicleTransactionMapper">
+
+    <resultMap id="all_VehicleTransactionList" type="com.lichunliang.huoyunwuliu.pojo.VehicleTransaction">
+        <id property="id" column="id"></id>
+        <result property="identityId" column="identity_id"></result>
+        <result property="vehicleType.id" column="vehicle_type_id"></result>
+        <result property="vehicleDescription" column="vehicle_description"></result>
+        <result property="addressCity" column="address_city"></result>
+        <result property="licensePlateTime" column="license_plate_time"></result>
+        <result property="vehicleLength.id" column="vehicle_length_id"></result>
+        <result property="img" column="img"></result>
+        <result property="phone" column="phone"></result>
+        <result property="status" column="status"></result>
+        <result property="user.id" column="user_id"></result>
+        <result property="user.username" column="username"></result>
+        <result property="vehicleLength.vehicleLengthName" column="vehicle_length_name"></result>
+        <result property="vehicleType.vehicleTypeName" column="vehicle_type_name"></result>
+    </resultMap>
+    <insert id="insertVehicleTransaction">
+      insert into vehicle_transaction
+      (identity_id, vehicle_type_id, vehicle_description, address_city, license_plate_time, vehicle_length_id, img, phone, user_id,status)
+      values (#{identityId},#{vehicleType.id},#{vehicleDescription},#{addressCity},#{licensePlateTime},#{vehicleLength.id},#{img},#{phone},#{user.id},#{status})
+    </insert>
+    <update id="updateVehicleTransactionById">
+        update vehicle_transaction set status=#{status} where id=#{id}
+    </update>
+    <delete id="deleteVehicleTransactionById">
+        delete from vehicle_transaction where id=#{id}
+    </delete>
+    <select id="selectVehicleTransactionList" resultMap="all_VehicleTransactionList">
+        <include refid="all_VehicleTransaction"></include>
+        <where>
+            <if test="userId==null">
+                and vt.status = 1
+            </if>
+            <if test="userId!=null and userId!=0">
+                and vt.user_id = #{userId}
+            </if>
+            <if test="identityId!=null and identityId!=0">
+                and vt.identity_id = #{identityId}
+            </if>
+            <if test="addressCity!=null and addressCity!=''">
+                and vt.address_city like concat('%',#{addressCity},'%')
+            </if>
+            <if test="vehicleTypeId!=null and vehicleTypeId!=0">
+                and vt.vehicle_type_id = #{vehicleTypeId}
+            </if>
+        </where>
+
+        order by id desc
+    </select>
+    <sql id="all_VehicleTransaction">
+        select vt.id, vt.identity_id, vt.vehicle_type_id, vt.vehicle_description, vt.address_city,
+        vt.license_plate_time, vt.vehicle_length_id, vt.img, vt.phone, vt.user_id,vt.status,
+        u.username,
+        vl.vehicle_length_name,
+        v.vehicle_type_name
+        from vehicle_transaction vt
+        inner join user u on vt.user_id = u.id
+        inner join vehicle_length vl on vt.vehicle_length_id = vl.id
+        inner join vehicle_type v on vt.vehicle_type_id = v.id
+    </sql>
+</mapper>

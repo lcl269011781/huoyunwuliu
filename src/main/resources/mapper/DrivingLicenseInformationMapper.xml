@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lichunliang.huoyunwuliu.mapper.DrivingLicenseInformationMapper">
+    <resultMap id="driving_all" type="com.lichunliang.huoyunwuliu.pojo.DrivingLicenseInformation">
+        <id property="id" column="id"></id>
+        <result property="drivingName" column="driving_name"></result>
+        <result property="drivingAddressCity" column="driving_address_city"></result>
+        <result property="deliveryCall" column="delivery_call"></result>
+        <result property="status" column="status"></result>
+        <result property="drivingLicenseType.id" column="driving_license_type_id"></result>
+        <result property="drivingLicenseType.drivingLicenseTypeName" column="driving_license_type_name"></result>
+        <result property="drivingLicenseScore.id" column="driving_license_score_id"></result>
+        <result property="drivingLicenseScore.drivingLicenseScoreName" column="driving_license_score_name"></result>
+        <result property="user.id" column="user_id"></result>
+        <result property="user.relName" column="rel_name"></result>
+        <result property="user.username" column="username"></result>
+    </resultMap>
+    <insert id="insertDrivingLicenseInformation">
+        insert into
+        driving_license_information(driving_name, driving_license_type_id, driving_license_score_id, driving_address_city,delivery_call, status,user_id)
+        values (#{drivingName},#{drivingLicenseType.id},#{drivingLicenseScore.id},#{drivingAddressCity},#{deliveryCall},#{status},#{user.id})
+    </insert>
+    <update id="updateDrivingLicenseInformationById">
+        update driving_license_information set status=#{status} where id=#{id}
+    </update>
+    <delete id="deleteDrivingLicenseInformationByid">
+        delete from driving_license_information where id=#{id}
+    </delete>
+    <select id="selectDrivingLicenseInformationList"
+            resultMap="driving_all">
+        <include refid="driving_all"></include>
+        <where>
+            <if test="userId==null">
+                and di.status = 1
+            </if>
+            <if test="userId!=null and userId!=0">
+                and di.user_id = #{userId}
+            </if>
+            <if test="drivingLicenseTypeId!=null and drivingLicenseTypeId!=0">
+                and di.driving_license_type_id = #{drivingLicenseTypeId}
+            </if>
+            <if test="drivingAddressCity!=null and drivingAddressCity!=''">
+                and di.driving_address_city like concat('%',#{drivingAddressCity},'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+    <sql id="driving_all">
+        select di.id, di.driving_name, di.driving_license_type_id,
+        di.driving_license_score_id, di.driving_address_city, di.delivery_call, di.status,
+        u.rel_name,u.username,
+        dlt.driving_license_type_name,
+        dls.driving_license_score_name
+         from driving_license_information di
+         inner join user u on di.user_id = u.id
+         inner join driving_license_type dlt on di.driving_license_type_id = dlt.id
+         inner join driving_license_score dls on di.driving_license_score_id = dls.id
+    </sql>
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lichunliang.huoyunwuliu.mapper.UserMapper">
+    <insert id="insertUser">
+        insert into user(username, password, rel_name, card, email, address_city)
+        values(#{username},#{password},#{relName},#{card},#{email},#{addressCity})
+    </insert>
+    <update id="updateUser">
+        update user set amount=#{amount} where id=#{id}
+    </update>
+    <select id="selectUserByUsername" resultType="com.lichunliang.huoyunwuliu.pojo.User">
+        select id, username, password, rel_name, card, email, address_city,amount
+         from user
+         where username=#{username}
+    </select>
+</mapper>

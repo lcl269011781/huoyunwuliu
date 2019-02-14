@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lichunliang.huoyunwuliu.mapper.MessageMapper">
+    <insert id="insertMessage">
+        insert into message (name, content, reply, release_time)
+        values (#{name},#{content},#{reply},#{releaseTime})
+    </insert>
+    <select id="selectMessageList" resultType="com.lichunliang.huoyunwuliu.pojo.Message">
+        select id, name, content, reply, release_time
+        from message
+        order by release_time desc
+    </select>
+</mapper>

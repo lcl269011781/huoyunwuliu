@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="/images/logo.ico">
+    <title>新广货运联盟-注册页面</title>
+    <link rel="stylesheet" href="/css/login.css"/>
+<body>
+<div class="register-container">
+    <h1>会员注册</h1>
+    <form action="/user/register.html" method="post" id="registerForm">
+        <div>
+            <input type="text" name="username" th:value="${param.username}" class="phone_number" placeholder="输入手机号码" autocomplete="off"
+                   id="number"/>
+        </div>
+        <div>
+            <input type="password" name="password" class="password" placeholder="输入密码" oncontextmenu="return false"
+                   onpaste="return false"/>
+        </div>
+        <div>
+            <input type="password" name="confirm_password" class="confirm_password" placeholder="再次输入密码"
+                   oncontextmenu="return false" onpaste="return false"/>
+        </div>
+        <div>
+            <input type="text" name="relName" th:value="${param.relName}" class="relName" placeholder="真实姓名" autocomplete="off"/>
+        </div>
+        <div>
+            <input type="text" name="card" class="id" th:value="${param.card}" placeholder="输入身份证号码" oncontextmenu="return false"
+                   onpaste="return false"/>
+        </div>
+        <div>
+            <input type="email" name="email" class="email" th:value="${param.email}" placeholder="输入邮箱地址" oncontextmenu="return false"
+                   onpaste="return false"/>
+        </div>
+        <div>
+            <input type="text" name="phone_code" class="phone_code" placeholder="输入手机验证码" oncontextmenu="return false"
+                   onpaste="return false" style="width:170px;"/>
+            <button type="button" onclick="getJMS(this)" style="width:90px;">点击获取</button>
+        </div>
+        <div>
+            <input type="text" name="addressCity" placeholder="输入所在城市 选填">
+        </div>
+        <div style="float:left; margin-top:10px;">
+            注册即代表同意<a href="/agreement.html" target="_blank">&laquo;会员注册协议&raquo;</a>
+        </div>
+        <button id="submit" type="submit">注 册</button><span style="color:red;">[[${error}]]</span>
+        <button type="reset" style="background:#F0AD4E;">重 置</button>
+    </form>
+    <a href="login.html">
+        <button type="button" class="register-tis">已经有账号？</button>
+    </a>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/common.js"></script>
+<!--背景图片自动更换-->
+<script src="/js/supersized.3.2.7.min.js"></script>
+<script src="/js/supersized-init.js"></script>
+<!--表单验证-->
+<script src="/js/jquery.validate.min.js?var1.14.0"></script>
+<script type="text/javascript">
+    var time = 0;
+
+    /**
+     * 点击发送手机验证码
+     * @param obj
+     */
+    function getJMS(obj) {
+        var phoneNumber = $("input[name='username']").val();
+        var res = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+        if (phoneNumber.trim() == "" || !res.test(phoneNumber)) {
+            alert("手机号格式不正确");
+            return false;
+        } else {
+            //发送手机验证码
+            $.ajax({
+                url:"/user/getJMS",
+                type:"POST",
+                data:{
+                    phoneNumber:phoneNumber,
+                },
+                success:function (result) {
+                    //发送回显
+                    if (result.code==500){
+                        alert(result.msg);
+                        return ;
+                    }
+                    if (result.code==200){
+                        time = 60;
+                        timeNum(obj);
+                    }
+                }
+            })
+        }
+    }
+
+    //60秒重发设置
+    function timeNum(obj) {
+        if (time <= 0) {
+            $(obj).attr("disabled", false);
+            $(obj).text("重新发送");
+            return;
+        }
+        $(obj).attr("disabled", true);
+        $(obj).text("重新发送(" + time + ")");
+        time--;
+        setTimeout(function () {
+            timeNum(obj, time)
+        }, 1000)
+    }
+
+</script>
+</body>
+</html>

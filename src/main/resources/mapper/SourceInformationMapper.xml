@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lichunliang.huoyunwuliu.mapper.SourceInformationMapper">
+
+    <resultMap id="allInformation_byUserId" type="com.lichunliang.huoyunwuliu.pojo.SourceInformation">
+        <id property="id" column="id"></id>
+        <result property="shipperName" column="shipper_name"></result>
+        <result property="departureCity" column="departure_city"></result>
+        <result property="reachingCity" column="reaching_city"></result>
+        <result property="goodsName" column="goods_name"></result>
+        <result property="status" column="status"></result>
+        <result property="vehicleType.id" column="vehicle_type_id"></result>
+        <result property="vehicleType.vehicleTypeName" column="vehicle_type_name"></result>
+        <result property="vehicleVolume.id" column="vehicle_volume_id"></result>
+        <result property="vehicleVolume.vehicleVolumeName" column="vehicle_volume_name"></result>
+        <result property="deliveryPhone" column="delivery_phone"></result>
+        <result property="weightOrVolume" column="weight_or_volume"></result>
+        <result property="vehicleLength.id" column="vehicle_length_id"></result>
+        <result property="vehicleLength.vehicleLengthName" column="vehicle_length_name"></result>
+        <result property="freight" column="freight"></result>
+        <result property="pickUpPhone" column="pick_up_phone"></result>
+        <result property="goodsDescription" column="goods_description"></result>
+        <result property="user.id" column="user_id"></result>
+        <result property="user.relName" column="rel_name"></result>
+        <result property="user.username" column="username"></result>
+        <result property="releaseTime" column="release_time"></result>
+    </resultMap>
+    <insert id="insertSourceInformation">
+        insert into source_information
+        (shipper_name, departure_city, reaching_city,
+        goods_name, vehicle_type_id, vehicle_volume_id,
+        delivery_phone, weight_or_volume, vehicle_length_id, freight,
+        pick_up_phone, user_id, goods_description, release_time,status)
+        values (#{shipperName}, #{departureCity}, #{reachingCity},
+        #{goodsName}, #{vehicleType.id}, ${vehicleVolume.id},
+        #{deliveryPhone}, #{weightOrVolume}, #{vehicleLength.id}, #{freight},
+        #{pickUpPhone}, #{user.id}, #{goodsDescription}, #{releaseTime},#{status})
+    </insert>
+    <update id="updateSourceInformationByIdAndUserId">
+        update source_information set status=#{status},release_time=#{date} where id=#{id} and user_id=#{userId}
+    </update>
+    <delete id="deleteSourceInformationByIdAndUserId">
+        delete from source_information where id = #{id} and user_id=#{userId}
+    </delete>
+    <select id="selectSourceInformationList" resultMap="allInformation_byUserId">
+        <include refid="all"></include>
+        <where>
+            <if test="departureCity!=null and departureCity!=''">
+                and si.departure_city like concat('%',#{departureCity},'%')
+            </if>
+            <if test="reachingCity!=null and reachingCity!=''">
+                and si.reaching_city like concat('%',#{reachingCity},'%')
+            </if>
+            <if test="vehicleTypeId!=null and vehicleTypeId!=0">
+                and si.vehicle_type_id = #{vehicleTypeId}
+            </if>
+            <if test="vehicleLengthId!=null and vehicleLengthId!=0">
+                and si.vehicle_length_id = #{vehicleLengthId}
+            </if>
+        </where>
+        order by release_time desc
+    </select>
+    <select id="selectSourceInformationListByUserId"
+            resultMap="allInformation_byUserId">
+        <include refid="all"></include>
+        where user_id = #{userId}
+        order by release_time desc
+    </select>
+
+    <sql id="all">
+        select
+        si.id,si.shipper_name,si.departure_city,si.reaching_city,si.goods_name,si.vehicle_type_id,si.vehicle_volume_id
+        ,si.delivery_phone,si.weight_or_volume,si.vehicle_length_id,si.freight,si.pick_up_phone,si.goods_description,
+        si.release_time,si.user_id,si.status,
+        u.username,u.rel_name,
+        vt.vehicle_type_name,
+        vl.vehicle_length_name,
+        vv.vehicle_volume_name
+        from source_information si
+        inner join user u on si.user_id = u.id
+        inner join vehicle_type vt on si.vehicle_type_id = vt.id
+        inner join vehicle_length vl on si.vehicle_length_id = vl.id
+        inner join vehicle_volume vv on si.vehicle_volume_id = vv.id
+    </sql>
+
+</mapper>

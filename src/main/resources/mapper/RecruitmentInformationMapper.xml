@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lichunliang.huoyunwuliu.mapper.RecruitmentInformationMapper">
+
+    <resultMap id="all_RecruitmentInformation" type="com.lichunliang.huoyunwuliu.pojo.RecruitmentInformation">
+        <id property="id" column="id"></id>
+        <result property="identityId" column="identity_id"></result>
+        <result property="postId" column="post_id"></result>
+        <result property="corporateName" column="corporate_name"></result>
+        <result property="addressCity" column="address_city"></result>
+        <result property="salaryRange.id" column="salary_id"></result>
+        <result property="ageRange.id" column="age_id"></result>
+        <result property="jobRequirements" column="job_requirements"></result>
+        <result property="phone" column="phone"></result>
+        <result property="user.id" column="user_id"></result>
+        <result property="status" column="status"></result>
+        <result property="ageRange.ageName" column="age_name"></result>
+        <result property="salaryRange.salaryName" column="salary_name"></result>
+    </resultMap>
+    <sql id="all_RecruitmentInformation">
+        select ri.id, ri.identity_id, ri.post_id, ri.corporate_name, ri.address_city,
+        ri.salary_id, ri.age_id, ri.job_requirements, ri.phone, ri.user_id, ri.status ,
+         ar.age_name,
+         sr.salary_name
+        from recruitment_information ri
+        inner join user u on u.id=ri.user_id
+        inner join age_range ar on ri.age_id = ar.id
+        inner join salary_range sr on ri.salary_id = sr.id
+    </sql>
+    <update id="updateRecruitmentInformationById">
+        update recruitment_information set status=#{status} where id=#{id}
+    </update>
+    <delete id="deleteRecruitmentInformationByid">
+        delete from recruitment_information where id=#{id}
+    </delete>
+    <select id="selectRecruitmentInformationList"
+            resultMap="all_RecruitmentInformation">
+        <include refid="all_RecruitmentInformation"></include>
+        <where>
+           <if test="userId==null">
+              and ri.status = 1
+           </if>
+            <if test="userId!=null and userId!=0">
+                and ri.user_id = #{userId}
+            </if>
+            <if test="identityId!=null and identityId!=0">
+                and ri.identity_id = #{identityId}
+            </if>
+            <if test="postId!=null and postId!=0">
+                and ri.post_id = #{postId}
+            </if>
+            <if test="addressCity!=null and addressCity!=''">
+                and ri.address_city like concat('%',#{addressCity},'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+    <insert id="insertRecruitmentInformation">
+        insert into recruitment_information(identity_id, post_id, corporate_name, address_city,
+        salary_id, age_id, job_requirements, phone, user_id, status)
+        values (#{identityId},#{postId},#{corporateName},#{addressCity},#{salaryRange.id},
+        #{ageRange.id},#{jobRequirements},#{phone},#{user.id},#{status})
+    </insert>
+</mapper>

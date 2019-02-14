@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lichunliang.huoyunwuliu.mapper.OrderMapper">
+    <insert id="addOrder" parameterType="com.lichunliang.huoyunwuliu.pojo.Order">
+      insert into alipay_order(USER_ID,ORDER_NUM,AMOUNT,CREATED_DATE,STATUS,OTHER_INFO)
+              VALUES(#{userId},#{orderNum},#{amount},NOW(),1,#{otherInfo})
+    </insert>
+    <update id="updateOrder" parameterType="com.lichunliang.huoyunwuliu.pojo.Order">
+        update alipay_order
+        <set>
+            <if test="status!=null">STATUS=#{status},</if>
+            <if test="tradeNum !=null and tradeNum!=''">TRADE_NUM=#{tradeNum},</if>
+            <if test="result !=null">RESULT=#{result},</if>
+            <if test="resultDate !=null">RESULT_DATE=#{resultDate},</if>
+            <if test="otherInfo !=null and otherInfo!=''">OTHER_INFO=#{otherInfo},</if>
+        </set>
+        where ORDER_NUM=#{orderNum}
+    </update>
+
+
+    <select id="getOrderByOrderNum" parameterType="string" resultType="com.lichunliang.huoyunwuliu.pojo.Order">
+        select USER_ID userId,ORDER_NUM orderNum,AMOUNT,STATUS,OTHER_INFO otherInfo
+        from alipay_order
+        where ORDER_NUM=#{orderNum}
+    </select>
+</mapper>
+    
