@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 12/02/2019 11:30:49
+ Date: 14/02/2019 15:04:27
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,7 @@ CREATE TABLE `age_range`  (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `age_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of age_range
@@ -37,6 +37,34 @@ INSERT INTO `age_range` VALUES (4, '31~40');
 INSERT INTO `age_range` VALUES (5, '41~50');
 INSERT INTO `age_range` VALUES (6, '51~60');
 INSERT INTO `age_range` VALUES (7, '60以上');
+
+-- ----------------------------
+-- Table structure for alipay_order
+-- ----------------------------
+DROP TABLE IF EXISTS `alipay_order`;
+CREATE TABLE `alipay_order`  (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `USER_ID` int(11) NOT NULL,
+  `ORDER_NUM` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `TRADE_NUM` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `AMOUNT` int(255) NULL DEFAULT NULL,
+  `CREATED_DATE` datetime(0) NULL DEFAULT NULL,
+  `STATUS` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `RESULT` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `RESULT_DATE` datetime(0) NULL DEFAULT NULL,
+  `OTHER_INFO` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `USER_ID`(`USER_ID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of alipay_order
+-- ----------------------------
+INSERT INTO `alipay_order` VALUES (60, 2, '1550115230700-17853305102', '2019021422001414400500408191', 200000, '2019-02-14 11:33:50', '2', 'TRADE_SUCCESS', '2019-02-14 11:34:08', '测试订单');
+INSERT INTO `alipay_order` VALUES (61, 2, '1550115473408-17853305102', '2019021422001414400500408323', 2000, '2019-02-14 11:37:53', '2', 'TRADE_SUCCESS', '2019-02-14 11:38:09', '测试订单');
+INSERT INTO `alipay_order` VALUES (62, 2, '1550115855449-17853305102', '2019021422001462380500624529', 1000000, '2019-02-14 11:44:15', '2', 'TRADE_SUCCESS', '2019-02-14 11:44:36', '测试订单');
+INSERT INTO `alipay_order` VALUES (63, 2, '1550115978460-17853305102', '2019021422001414400500408324', 1000000, '2019-02-14 11:46:18', '2', 'TRADE_SUCCESS', '2019-02-14 11:46:30', '测试订单');
+INSERT INTO `alipay_order` VALUES (64, 6, '1550116322234-17865920539', '2019021422001462380500624397', 5000, '2019-02-14 11:52:02', '2', 'TRADE_SUCCESS', '2019-02-14 11:52:17', '测试订单');
 
 -- ----------------------------
 -- Table structure for car_information
@@ -65,7 +93,7 @@ CREATE TABLE `car_information`  (
   CONSTRAINT `car_information_ibfk_2` FOREIGN KEY (`vehicle_volume_id`) REFERENCES `vehicle_volume` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `car_information_ibfk_3` FOREIGN KEY (`vehicle_length_id`) REFERENCES `vehicle_length` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `car_information_ibfk_4` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of car_information
@@ -95,7 +123,7 @@ CREATE TABLE `driving_license_information`  (
   CONSTRAINT `driving_license_information_ibfk_1` FOREIGN KEY (`driving_license_type_id`) REFERENCES `driving_license_type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `driving_license_information_ibfk_2` FOREIGN KEY (`driving_license_score_id`) REFERENCES `driving_license_score` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `driving_license_information_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of driving_license_information
@@ -116,7 +144,7 @@ CREATE TABLE `driving_license_score`  (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `driving_license_score_name` int(2) NOT NULL COMMENT '驾照分数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of driving_license_score
@@ -142,7 +170,7 @@ CREATE TABLE `driving_license_type`  (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `driving_license_type_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '驾照类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of driving_license_type
@@ -174,7 +202,7 @@ CREATE TABLE `message`  (
   `reply` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '回复',
   `release_time` datetime(6) NULL DEFAULT NULL COMMENT '留言发布时间，用来排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of message
@@ -205,7 +233,7 @@ CREATE TABLE `recruitment_information`  (
   INDEX `age_id`(`age_id`) USING BTREE,
   CONSTRAINT `recruitment_information_ibfk_1` FOREIGN KEY (`salary_id`) REFERENCES `salary_range` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `recruitment_information_ibfk_2` FOREIGN KEY (`age_id`) REFERENCES `age_range` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of recruitment_information
@@ -225,7 +253,7 @@ CREATE TABLE `salary_range`  (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `salary_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of salary_range
@@ -270,7 +298,7 @@ CREATE TABLE `source_information`  (
   CONSTRAINT `source_information_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `source_information_ibfk_3` FOREIGN KEY (`vehicle_volume_id`) REFERENCES `vehicle_volume` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `source_information_ibfk_4` FOREIGN KEY (`vehicle_length_id`) REFERENCES `vehicle_length` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of source_information
@@ -294,16 +322,17 @@ CREATE TABLE `user`  (
   `card` char(18) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '身份证号码',
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '邮箱',
   `address_city` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '所在城市',
+  `amount` int(10) NOT NULL DEFAULT 0 COMMENT '账户余额',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE,
   UNIQUE INDEX `card`(`card`, `email`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '17811111111', '123', 'lichunliang', '370112199711052011', '2690117811@qq.com', '山东济南');
-INSERT INTO `user` VALUES (2, '17853305102', '123', '李春亮', '370112199711052014', '269011781@qq.com', '山东济南');
+INSERT INTO `user` VALUES (1, '17811111111', '123', 'lichunliang', '370112199711052011', '2690117811@qq.com', '山东济南', 0);
+INSERT INTO `user` VALUES (2, '17853305102', '123', '李春亮', '370112199711052014', '269011781@qq.com', '山东济南', 2002000);
 
 -- ----------------------------
 -- Table structure for vehicle_length
@@ -313,7 +342,7 @@ CREATE TABLE `vehicle_length`  (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `vehicle_length_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '车辆长度',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of vehicle_length
@@ -352,7 +381,7 @@ CREATE TABLE `vehicle_transaction`  (
   CONSTRAINT `vehicle_transaction_ibfk_1` FOREIGN KEY (`vehicle_type_id`) REFERENCES `vehicle_type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `vehicle_transaction_ibfk_2` FOREIGN KEY (`vehicle_length_id`) REFERENCES `vehicle_length` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `vehicle_transaction_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of vehicle_transaction
@@ -374,7 +403,7 @@ CREATE TABLE `vehicle_type`  (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `vehicle_type_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '车辆类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of vehicle_type
@@ -392,7 +421,7 @@ CREATE TABLE `vehicle_volume`  (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `vehicle_volume_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '车辆数量',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of vehicle_volume
