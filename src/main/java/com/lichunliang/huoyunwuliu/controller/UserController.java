@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * ━━━━━━━━━神兽出没━━━━━━━━━
@@ -171,7 +172,7 @@ public class UserController {
         JSONObject jsonObject = JSONObject.parseObject(result);
         //error_code = 0 表示成功
         if (jsonObject.getString("error_code").equals("0")) {
-            redisTemplate.opsForValue().set(split[2], split[0]);
+            redisTemplate.opsForValue().set(split[2], split[0],60, TimeUnit.SECONDS);
         }
     }
 

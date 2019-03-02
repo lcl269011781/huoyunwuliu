@@ -48,6 +48,8 @@
                    th:text="${session.USER_TOKEN==null?'登录':session.USER_TOKEN.username}"></a>&nbsp;
                 <a th:href="@{/register.html}" target="_blank" id="reg">注册</a>
                 <a href="/login.html?method=logout" target="_blank">退出</a>
+                <a th:text="${session.USER_TOKEN==null?'':session.USER_TOKEN.amount/100.0+'￥'}"></a>
+                <a href="/pay.html" th:text="${session.USER_TOKEN==null?'':'充值'}"></a>
             </span>
         </div>
     </div>
